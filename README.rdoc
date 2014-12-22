@@ -76,12 +76,12 @@ Note that the only ways to get a job instance are by using the horse.findJob met
 or by assigning the result of methods like horse.addJob. Most of the horse methods will
 return a job, but there is no direct access to the Job class for creating orphaned jobs.
 
-Properties
+===== Properties
   job.isLiving   # is this job currently running
   job.age        # elapsed seconds this job has been running
   job.options    # contains the initial options hash with defaults applied
 
-Methods
+===== Methods
   start()                          # start job timers; jobs won't process unless started
   stop()                           # stops writing job timers
   needsCanceled()                  # true if age > duration and not an infinite job
@@ -89,7 +89,7 @@ Methods
 
 
 === Horse API
-Properties
+===== Properties
   horse.instance         # static property that returns the only instance of Horse
   horse.animationEnabled # is the runloop even enabled?
   horse.isRunning        # is the engine currently running
@@ -98,7 +98,7 @@ Properties
   horse.now              # miliseconds to this frame since starting
   horse.lastJobIndex     # returns the last job id created; next id is this + 1
 
-Methods
+===== Methods
   horse.setFPS(fps)     # change the current frames per second
   horse.start()         # starts the RAF runloop and processes any living jobs
   horse.stop()          # stops runloop
