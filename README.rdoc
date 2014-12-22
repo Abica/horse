@@ -5,6 +5,15 @@ animation.
 Jobs are processed every frame in a throttled RAF loop with wormhole patching. Unless paused or canceled, jobs
 begin running after the specified delay has elapsed.
 
+=== Why do you keep saying RAF?
+RAF is an acronym which stands for requestAnimationFrame, which is a much more performant method of running
+scheduled callbacks and animation than setTimeout/setInterval.
+
+This tells the browser that we are planning on animating, and we want our callback to be run before the next
+repaint is performed. RAF usually matches your display's refresh rate, however Horse throttles it for situations
+where you want to lock to a given FPS.
+
+This number is typically 60fps, and Horse also uses this as a default framerate.
 
 = Examples
 Adding a job via horse.addJob is the only exposed method of adding a job to the system. The newly created job
