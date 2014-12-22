@@ -18,8 +18,8 @@ begin running.
   delay     = 5    # in seconds
   autostart = false # default is true
 
-  # this job will run as soon as the horse instance is started and will
-  # print the current time in miliseconds out every frame for 10 seconds
+  # this job will run as soon as the horse instance is started and will print the current
+  # time in miliseconds out every frame for 10 seconds
   tickerJob = horse.addJob
     delay: delay
     duration: duration
@@ -49,13 +49,14 @@ begin running.
   # if using the defaults, you can pass the work function as the only argument
   translateJob = horse.addJob ->
     for bullet in bullets
-      bullet.translateY bullet.speed
+      bullet.translateX bullet.speed
 
 
-  # autostarts, runs forever and just pulses between colors in a pretty disco light fashion
+  # autostarts, runs forever and plays a pretty disco light show on any divs on the page
   horse.addJob (dt, frameTime, frameIndex) ->
     $el = $("div")
     max = 255
-    [r, g, b] = [max - (frameIndex % max), Math.floor(frameTime % max), frameIndex % max]
+    index = frameIndex % max
+    [r, g, b] = [max - index, Math.floor(frameTime % max), index]
     $el.css "background", "rgb(#{r}, #{g}, #{b})"
 
