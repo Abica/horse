@@ -68,10 +68,14 @@ begin running.
     $el.css "background", "rgb(#{r}, #{g}, #{b})"
 
 
-= Api
+= APIs
 All methods are called on an instance.
 
-=== Jobs
+=== Jobs API
+Note that the only ways to get a job instance are by using the horse.findJob method
+or by assigning the result of methods like horse.addJob. Most of the horse methods will
+return a job, but there is no direct access to the Job class for creating orphaned jobs.
+
 Properties
   job.isLiving   # is this job currently running
   job.age        # elapsed seconds this job has been running
@@ -84,7 +88,7 @@ Methods
   step(dt, frameTime, frameIndex)  # perform a single simulation step for this job
 
 
-=== Horse
+=== Horse API
 Properties
   horse.instance         # static property that returns the only instance of Horse
   horse.animationEnabled # is the runloop even enabled?
