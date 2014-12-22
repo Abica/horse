@@ -18,8 +18,8 @@ begin running.
   delay     = 5    # in seconds
   autostart = false # default is true
 
-  # this job will run as soon as the horse instance is started and will print the current
-  # time in miliseconds out every frame for 10 seconds
+  # this job will run as soon as the horse instance is started and will print the
+  # current time in miliseconds out every frame for 10 seconds
   tickerJob = horse.addJob
     delay: delay
     duration: duration
@@ -52,7 +52,7 @@ begin running.
       bullet.translateX bullet.speed
 
 
-  # autostarts, runs forever and plays a pretty disco light show on any divs on the page
+  # autostarts, runs forever and plays a pretty disco light show on any divs
   horse.addJob (dt, frameTime, frameIndex) ->
     $el = $("div")
     max = 255
