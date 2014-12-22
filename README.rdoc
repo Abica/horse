@@ -1,10 +1,10 @@
 = Contents
-  - {What is this?}[#what-is-this]
-  - {Examples}[#examples]
-  - {APIs}[#apis]
-    - {Jobs API}[#jobs-api]
-    - {Horse API}[#horse-api]
-  - {Why do you keep saying RAF?}[#why_do_you_keep_saying_raf]
+- {What is this?}[#what-is-this]
+- {Examples}[#examples]
+- {APIs}[#apis]
+  - {Jobs API}[#jobs-api]
+  - {Horse API}[#horse-api]
+- {Why do you keep saying RAF?}[#why_do_you_keep_saying_raf]
 
 
 = What is this?
