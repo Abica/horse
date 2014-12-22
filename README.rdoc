@@ -10,11 +10,11 @@ RAF is an acronym which stands for requestAnimationFrame. It is essentially a mu
 to setTimeout/setInterval for running scheduled callbacks and animations.
 
 Basically RAF just tells the browser that we are planning on performing some animation, and we want our callback
-to be run before the next repaint is occurs. Usually RAF matches your display's refresh rate, however Horse
+to be run before the next repaint occurs. Usually RAF matches your display's refresh rate, however Horse
 throttles it for situations where you want to lock to a given FPS.
 
 This number is typically 60fps, and Horse also uses this as a default framerate. Only a single instance of Horse
-is ever running at a time, and it sets up a single RAF run loop which will iterate through any added jobs and step
+is ever running at a time, and it sets up a single RAF run loop which will loop through any added jobs and step
 them once each frame.
 
 You can read the quintessential article on RAF by Paul Irish here: http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
