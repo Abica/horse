@@ -1,10 +1,18 @@
-Horse = (->
+window.requestAnimationFrame = (->
+  window.requestAnimationFrame       ||
+  window.webkitRequestAnimationFrame ||
+  window.mozRequestAnimationFrame    ||
+  (callback) -> window.setTimeout(callback, @fpsInterval)
+)()
+
+window.Horse = (->
   class Job
-    constructor: (duration, work, delay = 0, autostart = false) ->
+    constructor: (duration, work, delay, autostart) ->
       [@duration, @work, @delay, @autostart] = arguments
 
       @living = false
       @age = 0
+      @delay ||= 0
       @work ||= ->
 
       @run() if @autostart
@@ -26,42 +34,41 @@ Horse = (->
   class JobRunner
     @instance: null
 
-    frames: 0
     isRunning: false
-    then: null
-    now: null
-    lastJobIndex: null
     animationEnabled: true
+    frames: 0
+    then: 0
+    now: 0
+    lastJobIndex: null
 
     jobs: []
 
-    constructor: (fps) ->
+    constructor: (fps = 60) ->
       if JobRunner.instance
         return JobRunner.instance
+
+      JobRunner.instance = @
 
       @fps = fps
       @fpsInterval = 1000 / @fps
 
-      @requestAnimFrame =
-        window.requestAnimationFrame       ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame    ||
-        (callback) -> window.setTimeout(callback, @fpsInterval)
-
-    startAnimating: ->
+    start: ->
       return unless @animationEnabled
 
       @then = window.performance.now()
       @isRunning = true
-      @animate()
+      @animate 0
+
+    stop: ->
+      @isRunning = false
 
     animate: (frameTime) ->
       return unless @isRunning
       return unless @animationEnabled
 
-      @requestAnimationFrame animate
+      requestAnimationFrame $.proxy(@animate, @)
 
-      dt = frameTime - @now
+      dt = (frameTime - @now) / 1000
       @now = frameTime
       elapsed = @now - @then
 
@@ -76,19 +83,24 @@ Horse = (->
           @cancelJobAtIndex index
           continue
 
-        job.step dt, frameTime, frameIndex if job.isAlive
+        job.step dt, frameTime, frameIndex if job.living
 
     addJob: (job) ->
+      unless job instanceof Job
+        job = new Job arguments...
+
       job.id = ++@lastJobIndex
       @jobs.push job
+      job
 
     cancelJob: (id) ->
       index = @jobs.indexOf @findJob(id)
       @cancelJobAtIndex index
 
     cancelJobAtIndex: (index) ->
-      @jobs.splice index, 1
-      job.isAlive = false
+      job = @jobs.splice index, 1
+      if job
+        job.living = false
 
     findJob: (id) ->
       if id instanceof Job
@@ -96,7 +108,6 @@ Horse = (->
 
       for job in @jobs
         return job if job.id is id
-
 
   return JobRunner
 )()
