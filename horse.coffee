@@ -1,35 +1,48 @@
-window.requestAnimationFrame = (->
-  window.requestAnimationFrame       ||
-  window.webkitRequestAnimationFrame ||
-  window.mozRequestAnimationFrame    ||
-  (callback) -> window.setTimeout(callback, @fpsInterval)
-)()
-
 window.Horse = (->
+  merge = (dest, objs...) ->
+    for obj in objs
+      for k, v of obj
+        dest[k] = v
+    dest
+
+  isFunction = (obj) ->
+    typeof obj is 'function'
+
   class Job
-    constructor: (duration, work, delay, autostart) ->
-      [@duration, @work, @delay, @autostart] = arguments
+    constructor: (options = {}) ->
+      if isFunction options
+        options =
+          work: options
+
+      defaults =
+        work: ->
+        duration: 0
+        delay: 0
+        autostart: false
+
+      @options = merge {}, defaults, options
 
       @living = false
       @age = 0
-      @delay ||= 0
-      @work ||= ->
 
-      @start() if @autostart
+      @start() if @options.autostart
 
     start: ->
       @living = true
 
+    stop: ->
+      @living = false
+
+    needsCanceled: ->
+      @age > @options.duration
+
     step: (dt, frameTime, frameIndex) ->
-      if @delay > 0
-        @delay -= dt
+      if @options.delay > 0
+        @options.delay -= dt
         return
 
       @age += dt
-      @work dt, frameTime, frameIndex
-
-    stop: ->
-      @living = false
+      @options.work dt, frameTime, frameIndex
 
   class JobRunner
     @instance: null
@@ -51,6 +64,12 @@ window.Horse = (->
 
       @fps = fps
       @fpsInterval = 1000 / @fps
+
+      @requestAnimFrame =
+        window.requestAnimationFrame       ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        (callback) -> window.setTimeout(callback, @fpsInterval)
 
     start: ->
       return unless @animationEnabled
@@ -79,7 +98,7 @@ window.Horse = (->
 
     processJobs: (dt, frameTime, frameIndex) ->
       for job, index in @jobs by -1
-        if job.age > job.duration
+        if job.needsCanceled()
           @cancelJobAtIndex index
           continue
 
