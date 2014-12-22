@@ -118,8 +118,8 @@ return a job, but there is no direct access to the Job class for creating orphan
   horse.cancelJob(job)  # takes a job or job id and cancels  and returns it
   horse.findJob(id)     # takes a job or job id and returns the corresponding job
 
-These methods are available but are lower level and will probably be made private soon,
-since they are intended mainly for internal use... probably don't use these directly
+The following methods are available but are lower level and will probably be made private
+soon since they are intended mainly for internal use... probably don't use these directly
   horse.cancelJobAtIndex(index) # cancels and returns job at index in jobs list
   horse.processJobs()           # processes job and conditionally cancels or works job
   horse.animate()               # renders a single frame and requests another animation frame
