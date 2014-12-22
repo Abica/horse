@@ -6,6 +6,9 @@ Jobs are processed every frame in a throttled RAF loop with wormhole patching. U
 begin running after the specified delay has elapsed.
 
 = Examples
+Adding a job via horse.addJob is the only exposed method of adding a job to the system. The newly created job
+is added to the jobs list, given an id and returned.
+
 If autostart is not passed when adding a job, you must call .start() directly on the job before the timers will
 begin running.
 
@@ -41,10 +44,13 @@ begin running.
       $el.removeClass all_colors
       $el.addClass colors[frameIndex % colors.length]
 
-  # at this point tickerJob will start processing
+  # tell horse to spin the run loop and process any jobs
   horse.start()
 
+  # start and stop a job -- note that living jobs do nothing unless a horse instance
+  # has been told to start as well
   colorCyclingJob.start()
+  colorCyclingJob.stop()
 
   # if using the defaults, you can pass the work function as the only argument
   translateJob = horse.addJob ->
@@ -60,3 +66,55 @@ begin running.
     [r, g, b] = [max - index, Math.floor(frameTime % max), index]
     $el.css "background", "rgb(#{r}, #{g}, #{b})"
 
+= Api
+
+All methods called on an instance.
+
+== Jobs
+Properties
+  job.living   # is this job currently running
+  job.age      # elapsed seconds this job has been running
+  job.options  # contains the initial options hash with defaults applied
+
+Methods
+  start()                          # start job timers; jobs won't process unless started
+  stop()                           # stops writing job timers
+  needsCanceled()                  # true if age > duration and not an infinite job
+  step(dt, frameTime, frameIndex)  # perform a single simulation step for this job
+
+
+== Horse
+Properties
+  horse.instance         # static property that returns the only instance of Horse
+  horse.animationEnabled # is the runloop even enabled?
+  horse.isRunning        # is the engine currently running
+  horse.frames           # current number of frames since we started
+  horse.then             # miliseconds to last frame since starting
+  horse.now              # miliseconds to this frame since starting
+  horse.lastJobIndex     # returns the last job id created; next id is this + 1
+
+
+Methods
+  # queues a job
+  # takes either options hash or a function containing work to run every frame
+  #
+  # the options hash form defaults to these properties:
+  #
+  #  options =
+  #    work: ->         # empty unit of work
+  #    duration: -1     # -1 means run forever
+  #    delay: 0         # no delay
+  #    autostart: true  # start the timers for this job instantly if horse is running
+  horse.addJob(options)
+
+  horse.cancelJob(job)  # takes a job or job.id and removes it from job list and returns it
+  horse.findJob(id)     # takes a job or job id and returns the corresponding job
+
+  horse.start()         # starts the RAF runloop and processes any living jobs
+  horse.stop()          # stops runloop
+
+  # these methods are available but are lower level and will probably be made private soon
+  # since they are mainly intended for internal use.. probably don't use these directly
+  horse.cancelJobAtIndex(index) # cancels and returns job at index in jobs list
+  horse.processJobs()           # processes job list and conditionally removes job or works a job
+  horse.animate()               # renders a single frame and requests another animation frame
