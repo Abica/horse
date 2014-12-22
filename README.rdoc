@@ -31,12 +31,16 @@ begin running.
   # Horse is a singleton, so subsequent calls receive initial instance
   horse = new Horse(fps)
 
+  # tell horse to spin the run loop and process any jobs
+  horse.start()
+
   duration  = 10   # in seconds, default is -1 which means run forever
   delay     = 5    # in seconds
   autostart = false # default is true
 
-  # this job will run as soon as the horse instance is started and will print the
-  # current time in miliseconds out every frame for 10 seconds
+  # this job will run as soon as the horse instance is started and will update an
+  # element with the class current-time with the current time in miliseconds out
+  # every frame for 10 seconds
   tickerJob = horse.addJob
     delay: delay
     duration: duration
@@ -58,9 +62,6 @@ begin running.
       $el.removeClass all_colors
       $el.addClass colors[frameIndex % colors.length]
 
-  # tell horse to spin the run loop and process any jobs
-  horse.start()
-
   # start and stop a job -- note that living jobs do nothing unless a horse instance
   # has been told to start as well
   colorCyclingJob.start()
@@ -79,6 +80,10 @@ begin running.
     index = frameIndex % max
     [r, g, b] = [max - index, Math.floor(frameTime % max), index]
     $el.css "background", "rgb(#{r}, #{g}, #{b})"
+
+
+  # stop horsing around
+  horse.stop()
 
 
 = APIs
