@@ -34,20 +34,15 @@ begin running.
   # tell horse to spin the run loop and process any jobs
   horse.start()
 
-  duration  = 10   # in seconds, default is -1 which means run forever
-  delay     = 5    # in seconds
-  autostart = false # default is true
-
   # this job will run as soon as the horse instance is started and will update an
-  # element with the class current-time with the current time in miliseconds out
-  # every frame for 10 seconds
+  # element with the class current-time with the current time in miliseconds every
+  # frame for 10 seconds after a 5 second delay
   tickerJob = horse.addJob
-    delay: delay
-    duration: duration
+    delay: 5
+    duration: 10
     work: (dt, frameTime, frameIndex) ->
       $el = $(".current-time")
       $el.text +(new Date)
-
 
   colors = ["red", "green", "blue"]
   all_colors = colors.join(" ")
@@ -56,7 +51,7 @@ begin running.
   # to begin running
   colorCyclingJob = horse.addJob
     autostart: false
-    duration: duration
+    duration: 20
     work: (dt, frameTime, frameIndex) ->
       $el = $("div")
       $el.removeClass all_colors
@@ -72,7 +67,6 @@ begin running.
     for bullet in bullets
       bullet.translateX bullet.speed
 
-
   # autostarts, runs forever and plays a pretty disco light show on any divs
   horse.addJob (dt, frameTime, frameIndex) ->
     $el = $("div")
@@ -80,7 +74,6 @@ begin running.
     index = frameIndex % max
     [r, g, b] = [max - index, Math.floor(frameTime % max), index]
     $el.css "background", "rgb(#{r}, #{g}, #{b})"
-
 
   # stop horsing around
   horse.stop()
