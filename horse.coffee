@@ -34,7 +34,7 @@ window.Horse = (->
       @living = false
 
     needsCanceled: ->
-      @age > @options.duration
+      @age > @options.duration > -1
 
     step: (dt, frameTime, frameIndex) ->
       if @options.delay > 0
