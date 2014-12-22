@@ -16,9 +16,9 @@ window.Horse = (->
 
       defaults =
         work: ->
-        duration: 0
+        duration: -1
         delay: 0
-        autostart: false
+        autostart: true
 
       @options = merge {}, defaults, options
 
