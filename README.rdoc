@@ -16,25 +16,26 @@ begin running.
   delay     = 5    # in seconds
   autostart = true # default is false
 
-  $animating = $(".animating")
+  # this job will run as soon as the horse instance is started and will print the
+  # current time in miliseconds out every frame for 10 seconds
+  tickerJob = horse.addJob(duration, (dt, frameTime, frameIndex) ->
+    $el = $(".current-time")
+    $el.text +(new Date)
+  , delay, false)
 
-  # this job will run as soon as the horse instance is started
-  translateJob = horse.addJob(duration, (dt, frameTime, frameIndex) ->
-    for $el in $animating
-  , delay, autostart)
 
   colors = ["red", "green", "blue"]
   all_colors = colors.join(" ")
-  $el = $("div")
 
   # this job will not autostart, so we must call .start() on it if we want it
   # to begin running
   colorCyclingJob = horse.addJob(duration, (dt, frameTime, frameIndex) ->
+    $el = $("div")
     $el.removeClass all_colors
     $el.addClass colors[frameIndex % colors.length]
   )
 
-  # at this point translateJob will start processing
+  # at this point tickerJob will start processing
   horse.start()
 
   colorCyclingJob.start()
