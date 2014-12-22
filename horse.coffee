@@ -22,16 +22,16 @@ window.Horse = (->
 
       @options = merge {}, defaults, options
 
-      @living = false
+      @isLiving = false
       @age = 0
 
       @start() if @options.autostart
 
     start: ->
-      @living = true
+      @isLiving = true
 
     stop: ->
-      @living = false
+      @isLiving = false
 
     needsCanceled: ->
       @age > @options.duration > -1
@@ -62,14 +62,17 @@ window.Horse = (->
 
       JobRunner.instance = @
 
-      @fps = fps
-      @fpsInterval = 1000 / @fps
+      @setFPS fps
 
       @requestAnimFrame =
         window.requestAnimationFrame       ||
         window.webkitRequestAnimationFrame ||
         window.mozRequestAnimationFrame    ||
         (callback) -> window.setTimeout(callback, @fpsInterval)
+
+    setFPS: (fps) ->
+      @fps = fps
+      @fpsInterval = 1000 / @fps
 
     start: ->
       return unless @animationEnabled
@@ -102,7 +105,7 @@ window.Horse = (->
           @cancelJobAtIndex index
           continue
 
-        job.step dt, frameTime, frameIndex if job.living
+        job.step dt, frameTime, frameIndex if job.isLiving
 
     addJob: (job) ->
       unless job instanceof Job
@@ -118,8 +121,7 @@ window.Horse = (->
 
     cancelJobAtIndex: (index) ->
       job = @jobs.splice index, 1
-      if job
-        job.living = false
+      job.stop() if job
 
     findJob: (id) ->
       if id instanceof Job

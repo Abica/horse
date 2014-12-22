@@ -5,6 +5,7 @@ animation.
 Jobs are processed every frame in a throttled RAF loop with wormhole patching. Unless paused or canceled, jobs
 begin running after the specified delay has elapsed.
 
+
 = Examples
 Adding a job via horse.addJob is the only exposed method of adding a job to the system. The newly created job
 is added to the jobs list, given an id and returned.
@@ -66,15 +67,15 @@ begin running.
     [r, g, b] = [max - index, Math.floor(frameTime % max), index]
     $el.css "background", "rgb(#{r}, #{g}, #{b})"
 
+
 = Api
+All methods are called on an instance.
 
-All methods called on an instance.
-
-== Jobs
+=== Jobs
 Properties
-  job.living   # is this job currently running
-  job.age      # elapsed seconds this job has been running
-  job.options  # contains the initial options hash with defaults applied
+  job.isLiving   # is this job currently running
+  job.age        # elapsed seconds this job has been running
+  job.options    # contains the initial options hash with defaults applied
 
 Methods
   start()                          # start job timers; jobs won't process unless started
@@ -83,7 +84,7 @@ Methods
   step(dt, frameTime, frameIndex)  # perform a single simulation step for this job
 
 
-== Horse
+=== Horse
 Properties
   horse.instance         # static property that returns the only instance of Horse
   horse.animationEnabled # is the runloop even enabled?
@@ -93,8 +94,11 @@ Properties
   horse.now              # miliseconds to this frame since starting
   horse.lastJobIndex     # returns the last job id created; next id is this + 1
 
-
 Methods
+  horse.setFPS(fps)     # change the current frames per second
+  horse.start()         # starts the RAF runloop and processes any living jobs
+  horse.stop()          # stops runloop
+
   # queues a job
   # takes either options hash or a function containing work to run every frame
   #
@@ -109,9 +113,6 @@ Methods
 
   horse.cancelJob(job)  # takes a job or job.id and removes it from job list and returns it
   horse.findJob(id)     # takes a job or job id and returns the corresponding job
-
-  horse.start()         # starts the RAF runloop and processes any living jobs
-  horse.stop()          # stops runloop
 
   # these methods are available but are lower level and will probably be made private soon
   # since they are mainly intended for internal use.. probably don't use these directly
