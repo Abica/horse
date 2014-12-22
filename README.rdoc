@@ -10,18 +10,22 @@ If autostart is not passed when adding a job, you must call .start() directly on
 begin running.
 
   fps = 60 # default
-  horse = new Horse(fps) # Horse is a singleton, so subsequent calls receive initial instance
 
-  duration  = 10   # in seconds
+  # Horse is a singleton, so subsequent calls receive initial instance
+  horse = new Horse(fps)
+
+  duration  = 10   # in seconds, default is -1 which means run forever
   delay     = 5    # in seconds
-  autostart = true # default is false
+  autostart = false # default is true
 
-  # this job will run as soon as the horse instance is started and will print the
-  # current time in miliseconds out every frame for 10 seconds
-  tickerJob = horse.addJob(duration, (dt, frameTime, frameIndex) ->
-    $el = $(".current-time")
-    $el.text +(new Date)
-  , delay, false)
+  # this job will run as soon as the horse instance is started and will
+  # print the current time in miliseconds out every frame for 10 seconds
+  tickerJob = horse.addJob
+    delay: delay
+    duration: duration
+    work: (dt, frameTime, frameIndex) ->
+      $el = $(".current-time")
+      $el.text +(new Date)
 
 
   colors = ["red", "green", "blue"]
@@ -29,13 +33,29 @@ begin running.
 
   # this job will not autostart, so we must call .start() on it if we want it
   # to begin running
-  colorCyclingJob = horse.addJob(duration, (dt, frameTime, frameIndex) ->
-    $el = $("div")
-    $el.removeClass all_colors
-    $el.addClass colors[frameIndex % colors.length]
-  )
+  colorCyclingJob = horse.addJob
+    autostart: false
+    duration: duration
+    work: (dt, frameTime, frameIndex) ->
+      $el = $("div")
+      $el.removeClass all_colors
+      $el.addClass colors[frameIndex % colors.length]
 
   # at this point tickerJob will start processing
   horse.start()
 
   colorCyclingJob.start()
+
+  # if using the defaults, you can pass the work function as the only argument
+  translateJob = horse.addJob ->
+    for bullet in bullets
+      bullet.translateY bullet.speed
+
+
+  # autostarts, runs forever and just pulses between colors in a pretty disco light fashion
+  horse.addJob (dt, frameTime, frameIndex) ->
+    $el = $("div")
+    max = 255
+    [r, g, b] = [max - (frameIndex % max), Math.floor(frameTime % max), frameIndex % max]
+    $el.css "background", "rgb(#{r}, #{g}, #{b})"
+
