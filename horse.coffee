@@ -120,7 +120,7 @@ window.Horse = (->
       @cancelJobAtIndex index
 
     cancelJobAtIndex: (index) ->
-      job = @jobs.splice index, 1
+      job = @jobs.splice(index, 1)[0]
       job.stop() if job
 
     findJob: (id) ->
