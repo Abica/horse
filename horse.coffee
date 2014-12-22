@@ -15,9 +15,9 @@ window.Horse = (->
       @delay ||= 0
       @work ||= ->
 
-      @run() if @autostart
+      @start() if @autostart
 
-    run: ->
+    start: ->
       @living = true
 
     step: (dt, frameTime, frameIndex) ->
