@@ -1,0 +1,40 @@
+= What is this?
+Horse is a lightweight run loop built for executing delayed functions over time to simplify tasks like custom
+animation.
+
+Jobs are processed every frame in a throttled RAF loop with wormhole patching. Unless paused or canceled, jobs
+begin running after the specified delay has elapsed.
+
+= Examples
+If autostart is not passed when adding a job, you must call .start() directly on the job before the timers will
+begin running.
+
+  fps = 60 # default
+  horse = new Horse(fps) # Horse is a singleton, so subsequent calls receive initial instance
+
+  duration  = 10   # in seconds
+  delay     = 5    # in seconds
+  autostart = true # default is false
+
+  $animating = $(".animating")
+
+  # this job will run as soon as the horse instance is started
+  translateJob = horse.addJob(duration, (dt, frameTime, frameIndex) ->
+    for $el in $animating
+  , delay, autostart)
+
+  colors = ["red", "green", "blue"]
+  all_colors = colors.join(" ")
+  $el = $("div")
+
+  # this job will not autostart, so we must call .start() on it if we want it
+  # to begin running
+  colorCyclingJob = horse.addJob(duration, (dt, frameTime, frameIndex) ->
+    $el.removeClass all_colors
+    $el.addClass colors[frameIndex % colors.length]
+  )
+
+  # at this point translateJob will start processing
+  horse.start()
+
+  colorCyclingJob.start()
