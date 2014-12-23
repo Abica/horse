@@ -113,12 +113,12 @@ return a job, but there is no direct access to the Job class for creating orphan
   # queues a job
   # takes either options hash or a function containing work to run every frame
   #
-  # the options hash form defaults to these properties:
+  # the options argument hash accepts and defaults to these properties:
   #
   #  options =
-  #    work: ->         # empty unit of work
-  #    duration: -1     # -1 means run forever
-  #    delay: 0         # no delay
+  #    work: ->         # function to run each frame for the duration of this job
+  #    duration: -1     # duration in sections; -1 means run forever (default -1)
+  #    delay: 0         # delay in seconds to wait before running (default 0)
   #    autostart: true  # start the timers for this job instantly if horse is running
   horse.addJob(options)
 
