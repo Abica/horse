@@ -117,7 +117,9 @@ window.Horse = (->
 
     cancelJob: (id) ->
       job = @findJob(id)
-      job.stop() if job
+      if job
+        delete @jobs[id]
+        job.stop()
 
     findJob: (id) ->
       if id instanceof Job
