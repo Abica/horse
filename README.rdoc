@@ -127,7 +127,6 @@ return a job, but there is no direct access to the Job class for creating orphan
 
 The following methods are available but are lower level and will llikely be made private
 soon since they are intended mainly for internal use... You probably shouldn'tt use these directly.
-  horse.cancelJobAtIndex(index) # cancels and returns job at index in jobs list
   horse.processJobs()           # processes job and conditionally cancels or works job
   horse.animate()               # renders a single frame and requests another animation frame
 

@@ -54,7 +54,7 @@ window.Horse = (->
     now: 0
     lastJobIndex: null
 
-    jobs: []
+    jobs: {}
 
     constructor: (fps = 60) ->
       if JobRunner.instance
@@ -100,9 +100,9 @@ window.Horse = (->
         @processJobs dt, frameTime, ++@frames
 
     processJobs: (dt, frameTime, frameIndex) ->
-      for job, index in @jobs by -1
+      for id, job of @jobs
         if job.needsCanceled()
-          @cancelJobAtIndex index
+          @cancelJob job
           continue
 
         job.step dt, frameTime, frameIndex if job.isLiving
@@ -112,23 +112,18 @@ window.Horse = (->
         job = new Job arguments...
 
       job.id = ++@lastJobIndex
-      @jobs.push job
+      @jobs[job.id] = job
       job
 
     cancelJob: (id) ->
-      index = @jobs.indexOf @findJob(id)
-      @cancelJobAtIndex index
-
-    cancelJobAtIndex: (index) ->
-      job = @jobs.splice(index, 1)[0]
+      job = @findJob(id)
       job.stop() if job
 
     findJob: (id) ->
       if id instanceof Job
         return id
 
-      for job in @jobs
-        return job if job.id is id
+      @jobs[id]
 
   return JobRunner
 )()
