@@ -89,10 +89,10 @@ return a job, but there is no direct access to the Job class for creating orphan
   job.options    # contains the initial options hash with defaults applied
 
 ===== Methods
-  start()                          # start job timers; jobs won't process unless started
-  stop()                           # stops writing job timers
-  needsCanceled()                  # true if age > duration and not an infinite job
-  step(dt, frameTime, frameIndex)  # perform a single simulation step for this job
+  job.start()                         # start timers; jobs won't process unless started
+  job.stop()                          # stops writing job timers
+  job.needsCanceled()                 # true if age > duration and not an infinite job
+  job.step(dt, frameTime, frameIndex) # perform a single simulation step for this job
 
 
 === Horse API
