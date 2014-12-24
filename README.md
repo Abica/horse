@@ -20,7 +20,9 @@ This is an old inside reference to a production Three.js client app I worked on 
 
 Basically, we had a low level animation system that we called $horse, as it was the workhorse of the app.
 
-When I decided to write this library I remembered the name and it fit. Horse is the workhorse. Straight from the horse's mouth.
+When I decided to write this library I remembered the name and it fit. Horse is the workhorse.
+
+Straight from the horse's mouth.
 
 # Examples
 Adding a job via horse.addJob is the only exposed method of adding a job to the system. The newly created job
@@ -101,10 +103,10 @@ job.options    # contains the initial options hash with defaults applied
 
 #### Methods
 ```coffeescript
-job.start()                         # start timers; jobs won't process unless started
-job.stop()                          # stops writing job timers
-job.needsCanceled()                 # true if age > duration and not an infinite job
-job.step(dt, frameTime, frameIndex) # perform a single simulation step for this job
+job.start()                          # start timers; jobs won't process unless started
+job.stop()                           # stops writing job timers
+job.needsCanceled()                  # true if age > duration and not an infinite job
+job.step(dt, frameTime, frameIndex)  # perform a single simulation step for this job
 ```
 
 
@@ -162,4 +164,4 @@ This number is typically 60fps, and Horse also uses this as a default framerate.
 is ever running at a time, and it sets up a single RAF run loop which will loop through any added jobs and step
 them once each frame.
 
-You can read the quintessential article on RAF by Paul Irish here: [http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/]
+You can read the quintessential article on RAF by [http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/](Paul Irish here).
