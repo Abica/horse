@@ -18,9 +18,7 @@ begin running after the specified delay has elapsed.
 # Why the name Horse?
 This is an old inside reference to a production Three.js client app I worked on many years ago.
 
-Basically, we had a low level animation system that we called $horse, as it was the workhorse of the app.
-
-When I decided to write this library I remembered the name and it fit. Horse is the workhorse.
+Basically, we had a low level animation system that we called $horse, as it was the workhorse of the app.  When I decided to write this library I remembered the name and it fit. Horse is the workhorse.
 
 Straight from the horse's mouth.
 
@@ -164,4 +162,4 @@ This number is typically 60fps, and Horse also uses this as a default framerate.
 is ever running at a time, and it sets up a single RAF run loop which will loop through any added jobs and step
 them once each frame.
 
-You can read the quintessential article on RAF by [http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/](Paul Irish here).
+You can read the quintessential article on RAF by [Paul Irish here](http://www.paulirish.com/2011/requestanimationframe-for-smart-animating).
