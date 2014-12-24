@@ -145,8 +145,8 @@ horse.findJob(id)     # takes a job or job id and returns the corresponding job
 The following methods are available but are lower level and will llikely be made private
 soon since they are intended mainly for internal use... You probably shouldn'tt use these directly.
 ```coffeescript
-horse.processJobs()           # processes job and conditionally cancels or works job
-horse.animate()               # renders a single frame and requests another animation frame
+horse.processJobs()   # processes job and conditionally cancels or works job
+horse.animate()       # renders a single frame and requests another animation frame
 ```
 
 
