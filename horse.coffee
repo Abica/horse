@@ -1,4 +1,4 @@
-window.Horse = (->
+@Horse = do ->
   merge = (dest, objs...) ->
     for obj in objs
       for k, v of obj
@@ -47,6 +47,8 @@ window.Horse = (->
   class JobRunner
     @instance: null
 
+    jobs: {}
+
     isRunning: false
     animationEnabled: true
     frames: 0
@@ -54,7 +56,11 @@ window.Horse = (->
     now: 0
     lastJobIndex: null
 
-    jobs: {}
+    requestAnimFrame:
+      window.requestAnimationFrame       ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame    ||
+      (callback) -> window.setTimeout(callback, @fpsInterval)
 
     constructor: (fps = 60) ->
       if JobRunner.instance
@@ -64,15 +70,10 @@ window.Horse = (->
 
       @setFPS fps
 
-      @requestAnimFrame =
-        window.requestAnimationFrame       ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame    ||
-        (callback) -> window.setTimeout(callback, @fpsInterval)
-
     setFPS: (fps) ->
       @fps = fps
       @fpsInterval = 1000 / @fps
+      @fps
 
     start: ->
       return unless @animationEnabled
@@ -88,7 +89,7 @@ window.Horse = (->
       return unless @isRunning
       return unless @animationEnabled
 
-      requestAnimationFrame $.proxy(@animate, @)
+      @requestAnimFrame $.proxy(@animate, @)
 
       dt = (frameTime - @now) / 1000
       @now = frameTime
@@ -128,4 +129,3 @@ window.Horse = (->
       @jobs[id]
 
   return JobRunner
-)()
