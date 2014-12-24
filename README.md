@@ -139,6 +139,7 @@ horse.stop()          # stops runloop
 horse.addJob(options)
 
 horse.cancelJob(job)  # takes a job or job id and cancels  and returns it
+horse.cancelAllJobs() # cancels any queued jobs
 horse.findJob(id)     # takes a job or job id and returns the corresponding job
 ```
 

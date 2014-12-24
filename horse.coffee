@@ -122,6 +122,12 @@
         delete @jobs[id]
         job.stop()
 
+    cancelAllJobs: ->
+      for id, job of @jobs
+        if job
+          delete @jobs[id]
+          job.stop()
+
     findJob: (id) ->
       if id instanceof Job
         return id
