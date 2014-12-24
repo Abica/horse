@@ -56,12 +56,6 @@
     now: 0
     lastJobIndex: null
 
-    requestAnimFrame:
-      window.requestAnimationFrame       ||
-      window.webkitRequestAnimationFrame ||
-      window.mozRequestAnimationFrame    ||
-      (callback) -> window.setTimeout(callback, @fpsInterval)
-
     constructor: (fps = 60) ->
       if JobRunner.instance
         return JobRunner.instance
@@ -69,6 +63,12 @@
       JobRunner.instance = @
 
       @setFPS fps
+
+      window.requestAnimFrame =
+        window.requestAnimationFrame       ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        (callback) => window.setTimeout(callback, @fpsInterval)
 
     setFPS: (fps) ->
       @fps = fps
@@ -85,11 +85,11 @@
     stop: ->
       @isRunning = false
 
-    animate: (frameTime) ->
+    animate: (frameTime) =>
       return unless @isRunning
       return unless @animationEnabled
 
-      @requestAnimFrame $.proxy(@animate, @)
+      requestAnimFrame @animate
 
       dt = (frameTime - @now) / 1000
       @now = frameTime
