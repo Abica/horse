@@ -111,13 +111,13 @@ job.step(dt, frameTime, frameIndex)  # perform a single simulation step for this
 ## Horse API
 #### Properties
 ```coffeescript
-horse.instance         # static property that returns the only instance of Horse
-horse.animationEnabled # is the runloop even enabled?
-horse.isRunning        # is the engine currently running
-horse.frames           # current number of frames since we started
-horse.then             # miliseconds to last frame since starting
-horse.now              # miliseconds to this frame since starting
-horse.lastJobIndex     # returns the last job id created; next id is this + 1
+horse.instance          # static property that returns the only instance of Horse
+horse.animationEnabled  # is the runloop even enabled?
+horse.isRunning         # is the engine currently running
+horse.frames            # current number of frames since we started
+horse.then              # miliseconds to last frame since starting
+horse.now               # miliseconds to this frame since starting
+horse.lastJobIndex      # returns the last job id created; next id is this + 1
 ```
 
 #### Methods
@@ -146,8 +146,8 @@ horse.findJob(id)     # takes a job or job id and returns the corresponding job
 The following methods are available but are lower level and will llikely be made private
 soon since they are intended mainly for internal use... You probably shouldn'tt use these directly.
 ```coffeescript
-horse.processJobs()   # processes job and conditionally cancels or works job
-horse.animate()       # renders a single frame and requests another animation frame
+horse.processJobs()   # steps or cancels all currently running jobs one frame
+horse.step()          # steps the world one frame and requests another frame
 ```
 
 

@@ -80,16 +80,16 @@
 
       @then = window.performance.now()
       @isRunning = true
-      @animate 0
+      @step 0
 
     stop: ->
       @isRunning = false
 
-    animate: (frameTime) =>
+    step: (frameTime) =>
       return unless @isRunning
       return unless @animationEnabled
 
-      requestAnimFrame @animate
+      requestAnimFrame @step
 
       dt = (frameTime - @now) / 1000
       @now = frameTime
